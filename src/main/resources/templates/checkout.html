@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+    <link href="assets/fonts/">
+    <link href="assets/webfonts/">
+
+    <link href="/assets/img/favicon.ico" rel="shortcut icon"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/assets/css/flaticon.css"/>
+    <link rel="stylesheet" href="/assets/css/slicknav.min.css"/>
+    <link rel="stylesheet" href="/assets/css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="/assets/css/animate.css"/>
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+
+</head>
+<body>
+<header class="header-section">
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 text-center text-lg-left">
+                    <!-- logo -->
+                    <a href="/home" class="site-logo">
+                        <img src="/assets/img/logo/logo.png" alt="">
+                    </a>
+                </div>
+                <div class="col-xl-6 col-lg-5">
+                    <form class="header-search-form">
+                        <input type="text" placeholder="Search on time zone ....">
+                        <button><i class="flaticon-search"></i></button>
+                    </form>
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="user-panel">
+                        <div class="up-item" sec:authorize="!isAuthenticated()">
+                            <i class="flaticon-profile"></i>
+                            <a href="/login">Sign in</a>
+                        </div>
+                        <div class="up-item">
+                            <div class="shopping-card">
+                                <i class="flaticon-bag"></i>
+                            </div>
+                            <a href="/payments/pay">Shopping Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="main-navbar">
+        <div class="container">
+            <!-- menu -->
+            <ul class="main-menu">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/watches" class="active">Watches</a>
+                    <ul class="sub-menu">
+                        <li><a href="#">Rolex</a></li>
+                        <li><a href="#">Breitling</a></li>
+                        <li><a href="#">Citizen</a></li>
+                        <li><a href="#">G-Shock</a></li>
+                        <li><a href="#">Swiss Military</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Pages</a>
+                    <ul class="sub-menu">
+                        <li><a href="./product.html">Product Page</a></li>
+                        <li><a href="./category.html">Category Page</a></li>
+                        <li><a href="./cart.html">Cart Page</a></li>
+                        <li><a href="./checkout.html">Checkout Page</a></li>
+                        <li><a href="./contact.html">Contact Page</a></li>
+                    </ul>
+                </li>
+                <li><a href="/admin">Admin</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
+<section class="cart-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" th:if="${shoppingCart.getWatches().size() > 0}">
+                <form action="/payments/buy"
+                      method="post">
+                <div class="cart-table">
+                    <h3>Your Cart</h3>
+                    <div class="cart-table-warp">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th scope="col">Watch</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Available</th>
+                                <th scope="col">Manufacturer</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="watch : ${shoppingCart.getWatches()}">
+                                <td>
+                                    <img th:src="${watch.getImageBase64()}">
+                                    <div class="pc-title">
+                                        <h6 th:text="${watch.getName()}"></h6>
+                                        <p th:text="${watch.getPrice()}"></p>
+                                    </div>
+                                </td>
+                                <td th:text="${watch.getQuantity()}"></td>
+                                <td th:text="${watch.getQuantity() > 0} ? 'In stock' : 'Out of stock'"></td>
+                                <td th:text="${watch.getManufacturer() != null} ? ${watch.getManufacturer().getName()} : 'No manufacturer'"></td>
+                                <td th:text="${watch.getPrice()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    <script
+                            src='https://checkout.stripe.com/checkout.js'
+                            class='stripe-button'
+                            th:attr='data-key=${stripePublicKey},
+         data-amount=${amount},
+         data-currency=${currency}'
+                            data-name='TimeZone'
+                            data-description='TimeZone Checkout'
+                            data-locale='auto'
+                            data-zip-code='false'>
+                    </script>
+                </form>
+            </div>
+        </div>
+            <div class="row pt-3">
+                <h3 class="text-dark" th:text="${amount/100} + ' ' + ${currency}"></h3>
+                <br/>
+                <br/>
+            </div>
+
+        <input type="hidden" th:value="${amount}" name="amount"/>
+        <input type="hidden" th:value="${currency}" name="currency"/>
+
+        <div class="row pt-5 checkout-form">
+            <div class="cf-title">Payment</div>
+            <br>
+            <br>
+            <ul class="payment-list">
+                <li>Credit / Debit card<a href="#"><img src="/assets/img/mastercart.png" alt=""></a></li>
+                <li>Pay when you get the package</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="footer-section pt-5">
+    <div class="container">
+        <div class="footer-logo text-center">
+            <a href="/home"><img src="/assets/img/logo/logo.png" alt=""></a>
+        </div>
+    </div>
+    <div class="social-links-warp">
+        <div class="container">
+            <div class="social-links">
+                <a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+                <a href="" class="google-plus"><i class="fa fa-google-plus"></i><span>g+plus</span></a>
+                <a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
+                <a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+                <a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+                <a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+                <a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
